@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Share } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, spacing, radius, typography } from '../utils/theme';
 import { CATEGORIES } from '../data/shortcuts';
+import { MENUS } from '../data/menus';
 
 export default function ShortcutCard({
   shortcut,
@@ -15,6 +16,7 @@ export default function ShortcutCard({
 
   const category = CATEGORIES.find(c => c.id === shortcut.category);
   const keyCombo = platform === 'mac' ? shortcut.mac : shortcut.windows;
+  const menuPath = MENUS[shortcut.id] || '';
 
   function handleShare() {
     Share.share({
@@ -45,6 +47,13 @@ export default function ShortcutCard({
               </React.Fragment>
             ))}
           </View>
+          {menuPath ? (
+            <View style={styles.menuRow}>
+              <Text style={styles.menuPin}>📍</Text>
+              <Text style={styles.menuPath}>{menuPath}</Text>
+            </View>
+          ) : null}
+
           <View style={styles.actions}>
             <TouchableOpacity
               onPress={() => onToggleFavorite && onToggleFavorite(shortcut.id)}
@@ -148,6 +157,22 @@ const styles = StyleSheet.create({
     ...typography.label,
     color: colors.textLight,
     fontSize: 11,
+  },
+  menuRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 7,
+    gap: 4,
+  },
+  menuPin: {
+    fontSize: 10,
+    marginTop: 1,
+  },
+  menuPath: {
+    flex: 1,
+    fontSize: 11,
+    color: colors.textLight,
+    lineHeight: 16,
   },
   actions: {
     flexDirection: 'row',
