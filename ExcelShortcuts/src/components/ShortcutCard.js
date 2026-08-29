@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Share } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, spacing, radius, typography } from '../utils/theme';
 import { CATEGORIES } from '../data/shortcuts';
 
-export default function ShortcutCard({ shortcut, showCategory = false, platform = 'windows' }) {
+export default function ShortcutCard({
+  shortcut,
+  showCategory = false,
+  platform = 'windows',
+  isFavorite = false,
+  onToggleFavorite,
+}) {
   const [expanded, setExpanded] = useState(false);
 
   const category = CATEGORIES.find(c => c.id === shortcut.category);
   const keyCombo = platform === 'mac' ? shortcut.mac : shortcut.windows;
+
+  function handleShare() {
+    Share.share({
+      message: `📊 Excel Shortcut: ${shortcut.description}\n⊞ Windows: ${shortcut.windows}\n⌘ Mac: ${shortcut.mac}`,
+      title: 'Excel Shortcut',
+    });
+  }
 
   return (
     <TouchableOpacity
@@ -32,12 +45,38 @@ export default function ShortcutCard({ shortcut, showCategory = false, platform 
               </React.Fragment>
             ))}
           </View>
+          <View style={styles.actions}>
+            <TouchableOpacity
+              onPress={() => onToggleFavorite && onToggleFavorite(shortcut.id)}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              style={styles.actionBtn}
+            >
+              <MaterialCommunityIcons
+                name={isFavorite ? 'star' : 'star-outline'}
+                size={16}
+                color={isFavorite ? '#F59E0B' : colors.textLight}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleShare}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              style={styles.actionBtn}
+            >
+              <MaterialCommunityIcons
+                name="share-outline"
+                size={16}
+                color={colors.textLight}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <MaterialCommunityIcons
-          name={expanded ? 'chevron-up' : 'chevron-down'}
-          size={18}
-          color={colors.textLight}
-        />
+        {shortcut.tip && (
+          <MaterialCommunityIcons
+            name={expanded ? 'chevron-up' : 'chevron-down'}
+            size={18}
+            color={colors.textLight}
+          />
+        )}
       </View>
 
       {expanded && shortcut.tip && (
@@ -74,6 +113,8 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginRight: 4,
+    alignSelf: 'flex-start',
+    marginTop: 6,
   },
   content: {
     flex: 1,
@@ -107,6 +148,15 @@ const styles = StyleSheet.create({
     ...typography.label,
     color: colors.textLight,
     fontSize: 11,
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: 2,
+    marginTop: 8,
+  },
+  actionBtn: {
+    padding: 4,
+    borderRadius: 8,
   },
   tipBox: {
     flexDirection: 'row',

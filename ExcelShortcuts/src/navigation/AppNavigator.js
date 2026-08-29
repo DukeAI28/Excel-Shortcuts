@@ -8,6 +8,7 @@ import { colors, typography } from '../utils/theme';
 import HomeScreen from '../screens/HomeScreen';
 import CategoryScreen from '../screens/CategoryScreen';
 import AllShortcutsScreen from '../screens/AllShortcutsScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -25,6 +26,12 @@ function HomeStackNav() {
   );
 }
 
+const TAB_ICONS = {
+  Home: 'home-outline',
+  AllShortcuts: 'lightning-bolt-outline',
+  Favorites: 'star-outline',
+};
+
 export default function AppNavigator() {
   return (
     <NavigationContainer>
@@ -40,17 +47,20 @@ export default function AppNavigator() {
           tabBarLabelStyle: { ...typography.caption, fontSize: 11 },
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: colors.textLight,
-          tabBarIcon: ({ color, size }) => {
-            const icons = {
-              Home: 'home-outline',
-              AllShortcuts: 'lightning-bolt-outline',
-            };
-            return <MaterialCommunityIcons name={icons[route.name]} size={size} color={color} />;
-          },
+          tabBarIcon: ({ color, size, focused }) => (
+            <MaterialCommunityIcons
+              name={focused && route.name === 'Favorites'
+                ? 'star'
+                : TAB_ICONS[route.name]}
+              size={size}
+              color={color}
+            />
+          ),
         })}
       >
         <Tab.Screen name="Home" component={HomeStackNav} options={{ title: 'Explore' }} />
-        <Tab.Screen name="AllShortcuts" component={AllShortcutsScreen} options={{ title: 'All Shortcuts' }} />
+        <Tab.Screen name="AllShortcuts" component={AllShortcutsScreen} options={{ title: 'All' }} />
+        <Tab.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favorites' }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -6,11 +6,13 @@ import { SHORTCUTS } from '../data/shortcuts';
 import ShortcutCard from '../components/ShortcutCard';
 import SearchBar from '../components/SearchBar';
 import PlatformToggle from '../components/PlatformToggle';
+import { useFavorites } from '../context/FavoritesContext';
 import { colors, spacing, radius, typography } from '../utils/theme';
 
 export default function AllShortcutsScreen() {
   const [query, setQuery] = useState('');
   const [os, setOs] = useState('windows');
+  const { favorites, toggleFavorite } = useFavorites();
 
   const filtered = useMemo(() => {
     if (!query.trim()) return SHORTCUTS;
@@ -38,7 +40,13 @@ export default function AllShortcutsScreen() {
         data={filtered}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <ShortcutCard shortcut={item} platform={os} showCategory />
+          <ShortcutCard
+            shortcut={item}
+            platform={os}
+            showCategory
+            isFavorite={favorites.has(item.id)}
+            onToggleFavorite={toggleFavorite}
+          />
         )}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}

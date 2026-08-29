@@ -5,12 +5,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CATEGORIES, SHORTCUTS } from '../data/shortcuts';
 import ShortcutCard from '../components/ShortcutCard';
 import PlatformToggle from '../components/PlatformToggle';
+import { useFavorites } from '../context/FavoritesContext';
 import { colors, spacing, radius, typography } from '../utils/theme';
 
 export default function CategoryScreen({ route, navigation }) {
   const { categoryId } = route.params;
   const [os, setOs] = useState(route.params.os || 'windows');
 
+  const { favorites, toggleFavorite } = useFavorites();
   const category = CATEGORIES.find(c => c.id === categoryId);
   const shortcuts = SHORTCUTS.filter(s => s.category === categoryId);
 
@@ -32,7 +34,12 @@ export default function CategoryScreen({ route, navigation }) {
         data={shortcuts}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <ShortcutCard shortcut={item} platform={os} />
+          <ShortcutCard
+            shortcut={item}
+            platform={os}
+            isFavorite={favorites.has(item.id)}
+            onToggleFavorite={toggleFavorite}
+          />
         )}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
