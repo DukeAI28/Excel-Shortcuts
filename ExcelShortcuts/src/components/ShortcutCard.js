@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Share } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, spacing, radius, typography } from '../utils/theme';
 import { CATEGORIES } from '../data/shortcuts';
@@ -17,13 +17,6 @@ export default function ShortcutCard({
   const category = CATEGORIES.find(c => c.id === shortcut.category);
   const keyCombo = platform === 'mac' ? shortcut.mac : shortcut.windows;
   const menuPath = MENUS[shortcut.id] || '';
-
-  function handleShare() {
-    Share.share({
-      message: `📊 Excel Shortcut: ${shortcut.description}\n⊞ Windows: ${shortcut.windows}\n⌘ Mac: ${shortcut.mac}`,
-      title: 'Excel Shortcut',
-    });
-  }
 
   return (
     <TouchableOpacity
@@ -64,17 +57,6 @@ export default function ShortcutCard({
                 name={isFavorite ? 'star' : 'star-outline'}
                 size={16}
                 color={isFavorite ? '#F59E0B' : colors.textLight}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleShare}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-              style={styles.actionBtn}
-            >
-              <MaterialCommunityIcons
-                name="share-outline"
-                size={16}
-                color={colors.textLight}
               />
             </TouchableOpacity>
           </View>
