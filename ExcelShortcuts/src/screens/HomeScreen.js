@@ -9,11 +9,30 @@ import { CATEGORIES, SHORTCUTS } from '../data/shortcuts';
 import ShortcutCard from '../components/ShortcutCard';
 import SearchBar from '../components/SearchBar';
 import PlatformToggle from '../components/PlatformToggle';
+import { useFavorites } from '../context/FavoritesContext';
 import { colors, spacing, radius, typography } from '../utils/theme';
+
+const MOST_USED_IDS = [
+  'edt-3',  // Copy
+  'edt-5',  // Paste
+  'edt-1',  // Undo
+  'wb-1',   // Save
+  'fmt-1',  // Bold
+  'frm-1',  // AutoSum
+  'frm-2',  // Edit cell
+  'frm-3',  // Toggle $ reference
+  'edt-7',  // Fill Down
+  'edt-9',  // Find & Replace
+  'fmt-7',  // AutoFilter
+  'dat-1',  // Create Table
+];
+
+const MOST_USED = MOST_USED_IDS.map(id => SHORTCUTS.find(s => s.id === id)).filter(Boolean);
 
 export default function HomeScreen({ navigation }) {
   const [query, setQuery] = useState('');
   const [os, setOs] = useState('windows');
+  const { favorites, toggleFavorite } = useFavorites();
 
   const isSearching = query.trim().length > 0;
 
@@ -67,14 +86,34 @@ export default function HomeScreen({ navigation }) {
               </View>
             ) : (
               searchResults.map(s => (
-                <ShortcutCard key={s.id} shortcut={s} platform={os} showCategory />
+                <ShortcutCard
+                  key={s.id}
+                  shortcut={s}
+                  platform={os}
+                  showCategory
+                  isFavorite={favorites.has(s.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
               ))
             )}
           </View>
         ) : (
           <>
+            {/* Most Used */}
+            <Text style={styles.sectionLabel}>Most Used</Text>
+            {MOST_USED.map(s => (
+              <ShortcutCard
+                key={s.id}
+                shortcut={s}
+                platform={os}
+                showCategory
+                isFavorite={favorites.has(s.id)}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))}
+
             {/* Categories Grid */}
-            <Text style={styles.sectionLabel}>Browse by Category</Text>
+            <Text style={[styles.sectionLabel, { marginTop: spacing.lg }]}>Browse by Category</Text>
             <View style={styles.grid}>
               {CATEGORIES.map(cat => (
                 <TouchableOpacity
@@ -97,7 +136,14 @@ export default function HomeScreen({ navigation }) {
             {/* Top Picks */}
             <Text style={[styles.sectionLabel, { marginTop: spacing.lg }]}>Top Picks for Students</Text>
             {topPicks.map(s => (
-              <ShortcutCard key={s.id} shortcut={s} platform={os} showCategory />
+              <ShortcutCard
+                key={s.id}
+                shortcut={s}
+                platform={os}
+                showCategory
+                isFavorite={favorites.has(s.id)}
+                onToggleFavorite={toggleFavorite}
+              />
             ))}
           </>
         )}
