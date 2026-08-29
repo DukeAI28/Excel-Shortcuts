@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Shortcuts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+
+<style>
+  /* ── Tokens ── */
+  :root {
+    --studio-bg: #0D1021;
+    --studio-surface: #181B2E;
+    --studio-border: rgba(255,255,255,0.07);
+    --phone-shell: #1C1F33;
+    --phone-screen-bg: #F7F8FC;
+    --phone-surface: #FFFFFF;
+    --phone-border: #E4E7EF;
+    --phone-border-light: #F0F2F8;
+    --blue: #2F7EFF;
+    --blue-light: #EBF2FF;
+    --mint: #19D4A4;
+    --mint-light: #E6FBF6;
+    --text: #0D1117;
+    --text-2: #5E6A8A;
+    --text-3: #9AA0BC;
+    --key-bg: #F0F2F8;
+    --key-border: #D0D5E8;
+    --key-shadow: #B8BDD4;
+    --tip-bg: #FFFBEB;
+    --tip-border: #F59E0B;
+    --tip-text: #78400C;
+    --cat-nav: #2F7EFF;
+    --cat-sel: #7C5CBF;
+    --cat-fmt: #E86B3A;
+    --cat-frm: #19A07A;
+    --cat-edt: #E03E3E;
+    --cat-wb:  #0F9080;
+    --cat-dat: #8B44C8;
+    --cat-viw: #1D7DD6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --phone-screen-bg: #13151F;
+      --phone-surface: #1C1F33;
+      --phone-border: #2A2D45;
+      --phone-border-light: #232640;
+      --text: #EDF0FF;
+      --text-2: #8A93B8;
+      --text-3: #5B617A;
+      --key-bg: #252843;
+      --key-border: #363A5A;
+      --key-shadow: #1A1C30;
+      --tip-bg: #2A1F00;
+      --tip-border: #D97706;
+      --tip-text: #FCD34D;
+      --blue-light: #0D1E3D;
+      --mint-light: #062820;
+    }
+  }
+  :root[data-theme="dark"] {
+    --phone-screen-bg: #13151F;
+    --phone-surface: #1C1F33;
+    --phone-border: #2A2D45;
+    --phone-border-light: #232640;
+    --text: #EDF0FF;
+    --text-2: #8A93B8;
+    --text-3: #5B617A;
+    --key-bg: #252843;
+    --key-border: #363A5A;
+    --key-shadow: #1A1C30;
+    --tip-bg: #2A1F00;
+    --tip-border: #D97706;
+    --tip-text: #FCD34D;
+    --blue-light: #0D1E3D;
+    --mint-light: #062820;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--studio-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 64px;
+    overflow-x: hidden;
+  }
+
+  /* ── Studio page background texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(47,126,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(25,212,164,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Key texture grid */
+  .key-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 52px);
+    grid-template-rows: repeat(auto-fill, 52px);
+    gap: 12px;
+    padding: 20px;
+    opacity: 0.025;
+  }
+  .key-cell {
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 6px;
+    border-bottom-width: 3px;
+  }
+
+  /* ── Studio label ── */
+  .studio-header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .studio-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin-bottom: 10px;
+  }
+  .studio-headline {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    color: #EEF1FF;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .studio-headline span { color: var(--mint); }
+  .studio-sub {
+    margin-top: 12px;
+    font-size: 15px;
+    color: rgba(200,205,230,0.55);
+    font-weight: 400;
+  }
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.06);
+    color: rgba(200,210,240,0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ── Phone Shell ── */
+  .phone-wrap {
+    position: relative;
+    z-index: 1;
+  }
+  .phone {
+    width: 375px;
+    height: 750px;
+    background: var(--phone-shell);
+    border-radius: 50px;
+    padding: 14px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 40px 120px rgba(0,0,0,0.7),
+      0 0 60px rgba(47,126,255,0.08);
+    position: relative;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 34px;
+    background: var(--phone-shell);
+    border-radius: 0 0 20px 20px;
+    z-index: 10;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 38px;
+    background: var(--phone-screen-bg);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── App UI inside phone ── */
+  .app-status-bar {
+    height: 44px;
+    background: var(--phone-screen-bg);
+    display: flex;
+    align-items: flex-end;
+    padding: 0 24px 6px;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .status-time {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .status-icons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .status-icons svg { color: var(--text); }
+
+  .app-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .app-content::-webkit-scrollbar { display: none; }
+
+  /* ── Screens ── */
+  .screen { display: none; flex-direction: column; height: 100%; }
+  .screen.active { display: flex; }
+
+  /* HOME screen */
+  .home-top {
+    padding: 16px 20px 12px;
+    background: var(--phone-screen-bg);
+  }
+  .home-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .home-app-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .home-app-sub {
+    font-size: 12px;
+    color: var(--text-2);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .platform-toggle {
+    display: flex;
+    background: rgba(0,0,0,0.06);
+    border-radius: 100px;
+    padding: 3px;
+    gap: 0;
+  }
+  :root[data-theme="dark"] .platform-toggle,
+  @media (prefers-color-scheme: dark) {
+    .platform-toggle { background: rgba(255,255,255,0.06); }
+  }
+  .pt-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-2);
+    transition: all 0.15s ease;
+  }
+  .pt-btn.active {
+    background: var(--phone-surface);
+    color: var(--text);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  }
+
+  /* Search bar */
+  .search-wrap {
+    position: relative;
+    padding: 0 20px 14px;
+    background: var(--phone-screen-bg);
+  }
+  .search-icon {
+    position: absolute;
+    left: 36px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-3);
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    height: 44px;
+    border-radius: 100px;
+    border: 1.5px solid var(--phone-border);
+    background: var(--phone-surface);
+    padding: 0 16px 0 42px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input::placeholder { color: var(--text-3); }
+  .search-input:focus { border-color: var(--blue); }
+  .search-clear {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-3);
+    display: none;
+    align-items: center;
+    padding: 4px;
+  }
+  .search-clear.visible { display: flex; }
+
+  /* Section label */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 0 20px;
+    margin-bottom: 10px;
+  }
+
+  /* Category grid */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 20px;
+    margin-bottom: 24px;
+  }
+  .cat-card {
+    background: var(--phone-surface);
+    border: 1.5px solid var(--phone-border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+  }
+  .cat-card:active { transform: scale(0.97); }
+  .cat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 17px;
+  }
+  .cat-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .cat-count {
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 500;
+  }
+
+  /* Shortcut card */
+  .shortcut-card {
+    background: var(--phone-surface);
+    border: 1.5px solid var(--phone-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .shortcut-card:hover { border-color: var(--blue); }
+  .sc-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .sc-cat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .sc-body { flex: 1; min-width: 0; }
+  .sc-desc {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .sc-keys {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+  }
+  .key-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--key-bg);
+    color: var(--text);
+    border: 1px solid var(--key-border);
+    border-bottom: 2.5px solid var(--key-shadow);
+    border-radius: 6px;
+    padding: 3px 7px;
+    white-space: nowrap;
+  }
+  .key-plus {
+    font-size: 10px;
+    color: var(--text-3);
+    font-weight: 700;
+  }
+  .sc-chevron {
+    color: var(--text-3);
+    flex-shrink: 0;
+    font-size: 14px;
+    transition: transform 0.2s;
+    margin-top: 2px;
+  }
+  .sc-chevron.open { transform: rotate(180deg); }
+  .sc-tip {
+    display: none;
+    margin-top: 10px;
+    background: var(--tip-bg);
+    border-radius: 8px;
+    border-left: 3px solid var(--tip-border);
+    padding: 8px 10px;
+  }
+  .sc-tip.visible { display: flex; gap: 6px; align-items: flex-start; }
+  .sc-tip-text {
+    font-size: 12px;
+    color: var(--tip-text);
+    line-height: 1.5;
+  }
+
+  /* Search results empty */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    display: none;
+  }
+  .empty-state.visible { display: block; }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-title { font-size: 16px; font-weight: 700; color: var(--text-2); }
+  .empty-sub { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+
+  /* Result count */
+  .result-count {
+    font-size: 12px;
+    color: var(--text-2);
+    padding: 0 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  /* Category screen */
+  .cat-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 12px;
+    background: var(--phone-screen-bg);
+    border-bottom: 1px solid var(--phone-border-light);
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--blue);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+  }
+  .cat-header-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+  }
+  .cat-header-info { flex: 1; }
+  .cat-header-name { font-size: 16px; font-weight: 700; color: var(--text); }
+  .cat-header-count { font-size: 11px; color: var(--text-3); }
+
+  /* Tab bar */
+  .tab-bar {
+    height: 82px;
+    background: var(--phone-surface);
+    border-top: 1px solid var(--phone-border);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 10px;
+    flex-shrink: 0;
+  }
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 0 8px;
+    border: none;
+    background: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .tab-icon { font-size: 22px; }
+  .tab-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-3);
+  }
+  .tab-item.active .tab-label { color: var(--blue); }
+  .tab-item.active .tab-icon { filter: none; }
+  .tab-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: none;
+    margin-top: -2px;
+  }
+  .tab-item.active .tab-dot { display: block; }
+
+  /* Home indicator */
+  .home-indicator {
+    height: 5px;
+    background: var(--text);
+    border-radius: 100px;
+    width: 130px;
+    margin: 0 auto 8px;
+    opacity: 0.15;
+  }
+
+  /* Padding bottom for scroll */
+  .scroll-pad { height: 20px; }
+
+  /* ── Action buttons (fav + share) ── */
+  .sc-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .fav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 7px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1;
+    transition: background 0.15s;
+    color: var(--text-3);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .fav-btn:hover { background: rgba(100,100,120,0.1); }
+  .fav-btn.active { color: #F59E0B; }
+
+  /* Menu path */
+  .sc-menu {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: 7px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .sc-menu-pin {
+    flex-shrink: 0;
+    opacity: 0.55;
+    font-size: 10px;
+    margin-top: 1px;
+  }
+  .sc-menu-path {
+    flex: 1;
+  }
+  .sc-menu-path .arr {
+    opacity: 0.5;
+    margin: 0 1px;
+  }
+
+  /* Favorites empty state */
+  .fav-empty {
+    text-align: center;
+    padding: 56px 24px;
+  }
+  .fav-empty-icon { font-size: 44px; margin-bottom: 14px; }
+  .fav-empty-title { font-size: 16px; font-weight: 700; color: var(--text-2); margin-bottom: 6px; }
+  .fav-empty-sub { font-size: 13px; color: var(--text-3); line-height: 1.55; }
+
+  /* All shortcuts tab */
+  .all-top {
+    padding: 16px 20px 0;
+    background: var(--phone-screen-bg);
+  }
+  .all-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+  }
+  .all-search-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .filter-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid var(--phone-border);
+    background: var(--phone-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 17px;
+  }
+
+  /* Studio caption below phone */
+  .studio-caption {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-top: 28px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .studio-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .stat-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: #EEF1FF;
+    letter-spacing: -0.5px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(200,210,240,0.4);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255,255,255,0.08);
+    align-self: center;
+  }
+
+  /* Platform toggle dark mode fix */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .platform-toggle {
+      background: rgba(255,255,255,0.06);
+    }
+  }
+</style>
+
+<!-- Background key grid texture -->
+<div class="key-grid" aria-hidden="true" id="keyGrid"></div>
+
+<!-- Studio page header -->
+<header class="studio-header">
+  <p class="studio-eyebrow">Mobile App Design</p>
+  <h1 class="studio-headline">Excel Shortcuts<br><span>for College Students</span></h1>
+  <p class="studio-sub">iOS &amp; Android · 183 shortcuts · Offline-ready</p>
+  <div class="badge-row">
+    <span class="badge">Category Browse</span>
+    <span class="badge">Live Search</span>
+    <span class="badge">Windows &amp; Mac</span>
+    <span class="badge">Tap to Reveal Tips</span>
+    <span class="badge">⭐ Favorites</span>
+    <span class="badge">📍 Menu Paths</span>
+  </div>
+</header>
+
+<!-- Phone -->
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+
+      <!-- Status bar -->
+      <div class="app-status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" color="var(--text)">
+            <rect x="0" y="3" width="3" height="9" rx="1" opacity="0.4"/>
+            <rect x="4.5" y="2" width="3" height="10" rx="1" opacity="0.6"/>
+            <rect x="9" y="0" width="3" height="12" rx="1"/>
+            <rect x="13.5" y="0" width="2.5" height="12" rx="1"/>
+          </svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" color="var(--text)">
+            <path d="M8 2.5C10.5 2.5 12.7 3.6 14.2 5.3L15.5 4C13.6 1.9 11 0.5 8 0.5C5 0.5 2.4 1.9 0.5 4L1.8 5.3C3.3 3.6 5.5 2.5 8 2.5Z" fill="currentColor" opacity="0.5"/>
+            <path d="M8 5.5C9.7 5.5 11.2 6.2 12.3 7.4L13.6 6.1C12.1 4.5 10.2 3.5 8 3.5C5.8 3.5 3.9 4.5 2.4 6.1L3.7 7.4C4.8 6.2 6.3 5.5 8 5.5Z" fill="currentColor" opacity="0.75"/>
+            <circle cx="8" cy="10.5" r="1.5" fill="currentColor"/>
+          </svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor" color="var(--text)">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35" fill="none"/>
+            <rect x="22" y="3.5" width="2.5" height="5" rx="1.25" fill="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="2" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Home Screen -->
+      <div class="screen active" id="screen-home">
+        <div style="background: var(--phone-screen-bg);">
+          <div class="home-top">
+            <div class="home-title-row">
+              <div>
+                <div class="home-app-name">Excel Shortcuts</div>
+                <div class="home-app-sub">Your quick reference guide</div>
+              </div>
+              <div class="platform-toggle">
+                <button class="pt-btn active" id="os-win" onclick="setPlatform('windows')">Win</button>
+                <button class="pt-btn" id="os-mac" onclick="setPlatform('mac')">Mac</button>
+              </div>
+            </div>
+          </div>
+          <div class="search-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path fill-rule="evenodd" d="M6.5 1a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM0 6.5a6.5 6.5 0 1111.59 4.048l3.43 3.43a.75.75 0 01-1.06 1.06l-3.43-3.43A6.5 6.5 0 010 6.5z"/>
+            </svg>
+            <input
+              type="text"
+              class="search-input"
+              id="homeSearch"
+              placeholder="Search shortcuts…"
+              oninput="handleHomeSearch(this.value)"
+            >
+            <button class="search-clear" id="homeSearchClear" onclick="clearHomeSearch()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 5.586L11.293 1.293a1 1 0 011.414 1.414L8.414 7l4.293 4.293a1 1 0 01-1.414 1.414L7 8.414l-4.293 4.293a1 1 0 01-1.414-1.414L5.586 7 1.293 2.707A1 1 0 012.707 1.293L7 5.586z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="app-content" id="homeContent">
+          <!-- Browse categories section -->
+          <div id="browseSec">
+            <div class="section-label" style="margin-top:16px;">Most Used</div>
+            <div style="padding:0 20px;" id="mostUsedList"></div>
+            <div class="section-label" style="margin-top:8px;">Browse by Category</div>
+            <div class="cat-grid" id="catGrid"></div>
+            <div class="section-label">Top Picks for Students</div>
+            <div style="padding:0 20px;" id="topPicksList"></div>
+            <div class="scroll-pad"></div>
+          </div>
+          <!-- Search results section -->
+          <div id="searchSec" style="display:none; padding:0 20px;">
+            <div class="result-count" id="searchCount"></div>
+            <div id="searchResultsList"></div>
+            <div class="empty-state" id="homeEmpty">
+              <div class="empty-icon">🔍</div>
+              <div class="empty-title">No shortcuts found</div>
+              <div class="empty-sub">Try different keywords</div>
+            </div>
+            <div class="scroll-pad"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Screen -->
+      <div class="screen" id="screen-category">
+        <div style="background:var(--phone-screen-bg);">
+          <div class="cat-header">
+            <button class="back-btn" onclick="goBack()">
+              <svg width="8" height="13" viewBox="0 0 8 13" fill="currentColor"><path d="M7 1L1.5 6.5 7 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              Back
+            </button>
+            <div class="cat-header-icon" id="catHeaderIcon"></div>
+            <div class="cat-header-info">
+              <div class="cat-header-name" id="catHeaderName"></div>
+              <div class="cat-header-count" id="catHeaderCount"></div>
+            </div>
+            <div class="platform-toggle">
+              <button class="pt-btn active" id="cat-os-win" onclick="setCatPlatform('windows')">Win</button>
+              <button class="pt-btn" id="cat-os-mac" onclick="setCatPlatform('mac')">Mac</button>
+            </div>
+          </div>
+        </div>
+        <div class="app-content" style="padding:14px 20px 20px;" id="catShortcutsList"></div>
+      </div>
+
+      <!-- All Shortcuts Screen -->
+      <div class="screen" id="screen-all">
+        <div style="background:var(--phone-screen-bg);">
+          <div class="all-top">
+            <div class="all-title">All Shortcuts</div>
+            <div class="all-search-row">
+              <div style="position:relative;flex:1;">
+                <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3)" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path fill-rule="evenodd" d="M6.5 1a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM0 6.5a6.5 6.5 0 1111.59 4.048l3.43 3.43a.75.75 0 01-1.06 1.06l-3.43-3.43A6.5 6.5 0 010 6.5z"/>
+                </svg>
+                <input type="text" class="search-input" id="allSearch" placeholder="Search all shortcuts…" oninput="handleAllSearch(this.value)">
+                <button class="search-clear" id="allSearchClear" onclick="clearAllSearch()">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 5.586L11.293 1.293a1 1 0 011.414 1.414L8.414 7l4.293 4.293a1 1 0 01-1.414 1.414L7 8.414l-4.293 4.293a1 1 0 01-1.414-1.414L5.586 7 1.293 2.707A1 1 0 012.707 1.293L7 5.586z"/></svg>
+                </button>
+              </div>
+              <div class="platform-toggle">
+                <button class="pt-btn active" id="all-os-win" onclick="setAllPlatform('windows')">Win</button>
+                <button class="pt-btn" id="all-os-mac" onclick="setAllPlatform('mac')">Mac</button>
+              </div>
+            </div>
+          </div>
+          <div class="result-count" style="padding:8px 20px 4px;" id="allCount"></div>
+        </div>
+        <div class="app-content" style="padding:0 20px 20px;" id="allShortcutsList"></div>
+      </div>
+
+      <!-- Favorites Screen -->
+      <div class="screen" id="screen-favorites">
+        <div style="background:var(--phone-screen-bg);">
+          <div class="all-top">
+            <div class="all-title">Favorites</div>
+            <div class="result-count" style="padding:0;margin-bottom:4px;" id="favCount"></div>
+          </div>
+        </div>
+        <div class="app-content" style="padding:0 20px 20px;" id="favShortcutsList"></div>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="tab-bar">
+        <button class="tab-item active" id="tab-home" onclick="switchTab('home')">
+          <span class="tab-icon">🏠</span>
+          <span class="tab-label">Explore</span>
+          <span class="tab-dot"></span>
+        </button>
+        <button class="tab-item" id="tab-all" onclick="switchTab('all')">
+          <span class="tab-icon">⚡</span>
+          <span class="tab-label">All</span>
+          <span class="tab-dot"></span>
+        </button>
+        <button class="tab-item" id="tab-favorites" onclick="switchTab('favorites')">
+          <span class="tab-icon">⭐</span>
+          <span class="tab-label">Favorites</span>
+          <span class="tab-dot"></span>
+        </button>
+      </div>
+      <div class="home-indicator"></div>
+    </div><!-- /phone-screen -->
+  </div><!-- /phone -->
+</div><!-- /phone-wrap -->
+
+<!-- Stats below -->
+<div class="studio-caption">
+  <div class="studio-stat">
+    <span class="stat-num" id="totalCount">55</span>
+    <span class="stat-label">Shortcuts</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="studio-stat">
+    <span class="stat-num">8</span>
+    <span class="stat-label">Categories</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="studio-stat">
+    <span class="stat-num">2</span>
+    <span class="stat-label">Platforms</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="studio-stat">
+    <span class="stat-num">100%</span>
+    <span class="stat-label">Offline</span>
+  </div>
+</div>
+
+<script>
+// ── Data ──
+const CATEGORIES = [
+  { id:'navigation', label:'Navigation', icon:'🧭', color:'#2F7EFF', bg:'#EBF2FF' },
+  { id:'selection',  label:'Selection',  icon:'🖱️', color:'#7C5CBF', bg:'#F3EEFF' },
+  { id:'formatting', label:'Formatting', icon:'✏️', color:'#E86B3A', bg:'#FFF0EA' },
+  { id:'formulas',   label:'Formulas',   icon:'𝑓',  color:'#19A07A', bg:'#E6FBF6' },
+  { id:'editing',    label:'Editing',    icon:'⌨️', color:'#E03E3E', bg:'#FFF0F0' },
+  { id:'workbook',   label:'Workbook',   icon:'📁', color:'#0F9080', bg:'#E3F8F5' },
+  { id:'data',       label:'Data',       icon:'📊', color:'#8B44C8', bg:'#F5EEFF' },
+  { id:'view',       label:'View',       icon:'👁',  color:'#1D7DD6', bg:'#E8F4FF' },
+  { id:'ribbon',     label:'Ribbon',     icon:'🎛️', color:'#C0392B', bg:'#FDECEA' },
+  { id:'comments',   label:'Comments',   icon:'💬', color:'#1ABC9C', bg:'#E8FAF6' },
+];
+
+const SHORTCUTS = [
+  { id:'nav-1', cat:'navigation', win:'Ctrl + Home', mac:'Cmd + Home', desc:'Go to cell A1 (beginning of sheet)', tip:'Great for jumping back to the top after scrolling far down.' },
+  { id:'nav-2', cat:'navigation', win:'Ctrl + End', mac:'Cmd + End', desc:'Go to the last used cell', tip:'Instantly jumps to the bottom-right corner of your data.' },
+  { id:'nav-3', cat:'navigation', win:'Ctrl + Arrow', mac:'Cmd + Arrow', desc:'Jump to the edge of a data region', tip:'Hold Shift while pressing to extend selection as you jump.' },
+  { id:'nav-4', cat:'navigation', win:'Ctrl + G', mac:'Cmd + G', desc:'Open Go To dialog — jump to any cell', tip:'Type a cell address like B50 to jump there instantly.' },
+  { id:'nav-5', cat:'navigation', win:'Ctrl + Page Down', mac:'Cmd + Page Down', desc:'Move to the next worksheet tab' },
+  { id:'nav-6', cat:'navigation', win:'Ctrl + Page Up', mac:'Cmd + Page Up', desc:'Move to the previous worksheet tab' },
+  { id:'nav-7', cat:'navigation', win:'F5', mac:'F5', desc:'Open Go To dialog' },
+  { id:'nav-8', cat:'navigation', win:'Ctrl + F6', mac:'Cmd + F6', desc:'Switch between open workbooks' },
+  { id:'sel-1', cat:'selection', win:'Ctrl + A', mac:'Cmd + A', desc:'Select all cells in the sheet', tip:'Press twice to select every cell if you\'re inside a data table.' },
+  { id:'sel-2', cat:'selection', win:'Ctrl + Shift + End', mac:'Cmd + Shift + End', desc:'Extend selection to the last used cell', tip:'Quickly highlights all your data from the current cell to the bottom-right.' },
+  { id:'sel-3', cat:'selection', win:'Shift + Space', mac:'Shift + Space', desc:'Select entire row' },
+  { id:'sel-4', cat:'selection', win:'Ctrl + Space', mac:'Ctrl + Space', desc:'Select entire column' },
+  { id:'sel-5', cat:'selection', win:'Ctrl + Shift + Arrow', mac:'Cmd + Shift + Arrow', desc:'Extend selection to last non-empty cell', tip:'The fastest way to highlight a large range of data.' },
+  { id:'sel-6', cat:'selection', win:'Ctrl + Click', mac:'Cmd + Click', desc:'Select multiple non-adjacent cells' },
+  { id:'fmt-1', cat:'formatting', win:'Ctrl + B', mac:'Cmd + B', desc:'Bold text' },
+  { id:'fmt-2', cat:'formatting', win:'Ctrl + I', mac:'Cmd + I', desc:'Italic text' },
+  { id:'fmt-3', cat:'formatting', win:'Ctrl + U', mac:'Cmd + U', desc:'Underline text' },
+  { id:'fmt-4', cat:'formatting', win:'Ctrl + 1', mac:'Cmd + 1', desc:'Open Format Cells dialog', tip:'Access all formatting: number, alignment, font, border, fill.' },
+  { id:'fmt-5', cat:'formatting', win:'Ctrl + Shift + $', mac:'Cmd + Shift + $', desc:'Apply currency format', tip:'Instant dollar sign format — perfect for finance assignments.' },
+  { id:'fmt-6', cat:'formatting', win:'Ctrl + Shift + %', mac:'Cmd + Shift + %', desc:'Apply percentage format', tip:'Multiplies the value by 100 and adds a % sign automatically.' },
+  { id:'fmt-7', cat:'formatting', win:'Ctrl + Shift + L', mac:'Cmd + Shift + L', desc:'Toggle AutoFilter dropdowns', tip:'One of the most useful shortcuts for analyzing class data.' },
+  { id:'fmt-8', cat:'formatting', win:'Ctrl + Shift + ~', mac:'Cmd + Shift + ~', desc:'Apply General number format' },
+  { id:'fmt-9', cat:'formatting', win:'Alt + H + H', mac:'Alt + H + H', desc:'Open fill color picker' },
+  { id:'fmt-10', cat:'formatting', win:'Alt + H + B', mac:'Alt + H + B', desc:'Open borders menu' },
+  { id:'frm-1', cat:'formulas', win:'Alt + =', mac:'Cmd + Shift + T', desc:'AutoSum — insert SUM formula instantly', tip:'Select a range and press this to sum it. Massive time saver.' },
+  { id:'frm-2', cat:'formulas', win:'F2', mac:'F2', desc:'Edit the active cell / enter edit mode', tip:'Press F2 to jump into a cell and see formula references highlighted.' },
+  { id:'frm-3', cat:'formulas', win:'F4', mac:'F4', desc:'Toggle absolute/relative cell reference ($)', tip:'While editing a formula, F4 cycles: $A$1 → A$1 → $A1 → A1. Essential for copy-pasting formulas.' },
+  { id:'frm-4', cat:'formulas', win:'Ctrl + `', mac:'Ctrl + `', desc:'Toggle Show Formulas mode', tip:'Great for auditing a spreadsheet or debugging errors.' },
+  { id:'frm-5', cat:'formulas', win:'Shift + F3', mac:'Shift + F3', desc:'Open Insert Function dialog', tip:'Search for any Excel function by name or description.' },
+  { id:'frm-6', cat:'formulas', win:'F9', mac:'F9', desc:'Recalculate all formulas' },
+  { id:'frm-7', cat:'formulas', win:'Ctrl + Shift + Enter', mac:'Cmd + Shift + Enter', desc:'Enter an array formula' },
+  { id:'edt-1', cat:'editing', win:'Ctrl + Z', mac:'Cmd + Z', desc:'Undo last action' },
+  { id:'edt-2', cat:'editing', win:'Ctrl + Y', mac:'Cmd + Y', desc:'Redo last undone action' },
+  { id:'edt-3', cat:'editing', win:'Ctrl + C', mac:'Cmd + C', desc:'Copy selected cells' },
+  { id:'edt-4', cat:'editing', win:'Ctrl + X', mac:'Cmd + X', desc:'Cut selected cells' },
+  { id:'edt-5', cat:'editing', win:'Ctrl + V', mac:'Cmd + V', desc:'Paste' },
+  { id:'edt-6', cat:'editing', win:'Ctrl + Alt + V', mac:'Cmd + Ctrl + V', desc:'Paste Special dialog', tip:'Paste only values, formats, or formulas. Use "Values Only" to remove formulas.' },
+  { id:'edt-7', cat:'editing', win:'Ctrl + D', mac:'Cmd + D', desc:'Fill Down — copy top cell downward', tip:'Select a range and press Ctrl+D to fill the formula or value down.' },
+  { id:'edt-8', cat:'editing', win:'Ctrl + R', mac:'Cmd + R', desc:'Fill Right — copy left cell rightward' },
+  { id:'edt-9', cat:'editing', win:'Ctrl + H', mac:'Cmd + H', desc:'Find and Replace', tip:'Replace any value or text across the entire sheet instantly.' },
+  { id:'edt-10', cat:'editing', win:'Ctrl + F', mac:'Cmd + F', desc:'Find — search in spreadsheet' },
+  { id:'edt-11', cat:'editing', win:'Delete', mac:'Delete', desc:'Clear cell contents (keep formatting)' },
+  { id:'edt-12', cat:'editing', win:'Ctrl + -', mac:'Cmd + -', desc:'Delete rows, columns, or cells' },
+  { id:'edt-13', cat:'editing', win:'Ctrl + Shift + +', mac:'Cmd + Shift + +', desc:'Insert rows, columns, or cells' },
+  { id:'edt-14', cat:'editing', win:'Alt + Enter', mac:'Ctrl + Opt + Enter', desc:'New line within a cell', tip:'Add a line break inside a cell without moving to the next one.' },
+  { id:'wb-1',  cat:'workbook', win:'Ctrl + S', mac:'Cmd + S', desc:'Save the workbook', tip:'Save every few minutes. Ctrl+S is one of the best habits in Excel.' },
+  { id:'wb-2',  cat:'workbook', win:'Ctrl + N', mac:'Cmd + N', desc:'Create a new workbook' },
+  { id:'wb-3',  cat:'workbook', win:'Ctrl + O', mac:'Cmd + O', desc:'Open an existing workbook' },
+  { id:'wb-4',  cat:'workbook', win:'Ctrl + W', mac:'Cmd + W', desc:'Close the current workbook' },
+  { id:'wb-5',  cat:'workbook', win:'Ctrl + P', mac:'Cmd + P', desc:'Print the workbook' },
+  { id:'wb-6',  cat:'workbook', win:'F12', mac:'Cmd + Shift + S', desc:'Save As — save with a new name or format' },
+  { id:'dat-1', cat:'data', win:'Ctrl + T', mac:'Cmd + T', desc:'Create a Table from selected data', tip:'Tables auto-expand, have built-in filters, and make formulas easier with structured references.' },
+  { id:'dat-2', cat:'data', win:'Ctrl + Shift + L', mac:'Cmd + Shift + L', desc:'Toggle filter dropdowns on/off' },
+  { id:'dat-3', cat:'data', win:'Alt + A + M', mac:'Alt + A + M', desc:'Remove duplicates from a range' },
+  { id:'dat-4', cat:'data', win:'Alt + N + V', mac:'Alt + N + V', desc:'Insert a PivotTable', tip:'One of the most powerful Excel features for summarizing large datasets.' },
+  { id:'dat-5', cat:'data', win:'Alt + D + S', mac:'Alt + D + S', desc:'Sort data ascending/descending' },
+  { id:'viw-1', cat:'view', win:'Ctrl + F1', mac:'Cmd + F1', desc:'Toggle Ribbon (hide/show toolbar)', tip:'Hide the ribbon for more screen space on large sheets.' },
+  { id:'viw-2', cat:'view', win:'Alt + W + F + F', mac:'Alt + W + F + F', desc:'Freeze or unfreeze panes', tip:'Freeze the top row to keep headers visible while scrolling down.' },
+  { id:'viw-3', cat:'view', win:'Ctrl + Scroll', mac:'Cmd + Scroll', desc:'Zoom in or out on the sheet' },
+  { id:'viw-4', cat:'view', win:'Alt + W + S', mac:'Alt + W + S', desc:'Split the window into panes' },
+  { id:'viw-5', cat:'view', win:'F11', mac:'F11', desc:'Create a chart from selected data instantly', tip:'Select your data range and press F11 — Excel creates a chart on a new sheet in one keystroke.' },
+  { id:'viw-6', cat:'view', win:'Alt + F1', mac:'Alt + F1', desc:'Insert an embedded chart on the current sheet', tip:'Like F11 but places the chart inline instead of on a new sheet.' },
+
+  // Dates & Time
+  { id:'dt-1', cat:'editing', win:'Ctrl + ;', mac:'Cmd + ;', desc:"Insert today's date", tip:"Stamps the current date as a static value — it won't update tomorrow." },
+  { id:'dt-2', cat:'editing', win:'Ctrl + Shift + ;', mac:'Cmd + Shift + ;', desc:'Insert the current time', tip:'Inserts a static time stamp at the moment you press it.' },
+
+  // More Formatting
+  { id:'fmt-11', cat:'formatting', win:'Ctrl + Shift + #', mac:'Cmd + Shift + #', desc:'Apply date format (DD-MMM-YY)' },
+  { id:'fmt-12', cat:'formatting', win:'Ctrl + Shift + @', mac:'Cmd + Shift + @', desc:'Apply time format (HH:MM AM/PM)' },
+  { id:'fmt-13', cat:'formatting', win:'Ctrl + Shift + !', mac:'Cmd + Shift + !', desc:'Apply comma number format (1,000.00)', tip:'Adds thousands separator and two decimal places — great for financial data.' },
+  { id:'fmt-14', cat:'formatting', win:'Alt + H + M + C', mac:'Alt + H + M + C', desc:'Merge and center selected cells', tip:'Used for header rows spanning multiple columns. Undo with Alt+H+M+U.' },
+  { id:'fmt-15', cat:'formatting', win:'Ctrl + E', mac:'Cmd + E', desc:'Flash Fill — auto-fill based on a pattern', tip:'Type one example (e.g. extract first names from full names), then press Ctrl+E. Excel detects the pattern and fills the rest. Game-changing.' },
+  { id:'fmt-16', cat:'formatting', win:'Ctrl + K', mac:'Cmd + K', desc:'Insert or edit a hyperlink', tip:'Link to a website, another sheet, or a file path.' },
+
+  // More Formulas
+  { id:'frm-8', cat:'formulas', win:'Ctrl + [', mac:'Cmd + [', desc:'Jump to the cells a formula references (precedents)', tip:"Great for tracing where a formula's inputs come from." },
+  { id:'frm-9', cat:'formulas', win:'Ctrl + ]', mac:'Cmd + ]', desc:'Jump to cells that depend on the active cell (dependents)' },
+  { id:'frm-10', cat:'formulas', win:'Ctrl + Shift + A', mac:'Cmd + Shift + A', desc:'Insert function argument placeholders', tip:'After typing a function name (e.g. =VLOOKUP), press this to see all argument slots labeled.' },
+
+  // More Data
+  { id:'dat-7', cat:'data', win:'Ctrl + Q', mac:'Cmd + Q', desc:'Open Quick Analysis tool', tip:'Select a range and press Ctrl+Q to instantly see charts, totals, sparklines, and formatting options. Perfect for fast summaries.' },
+  { id:'dat-8', cat:'data', win:'Alt + F5', mac:'Alt + F5', desc:'Refresh a PivotTable', tip:'Run this after changing source data so your PivotTable updates.' },
+  { id:'dat-9', cat:'data', win:'Ctrl + Shift + O', mac:'Cmd + Shift + O', desc:'Select all cells that contain comments' },
+  { id:'dat-10', cat:'data', win:'Alt + D + F + F', mac:'Alt + D + F + F', desc:'Apply AutoFilter to the selected range' },
+
+  // More Navigation
+  { id:'nav-9', cat:'navigation', win:'Ctrl + Backspace', mac:'Cmd + Backspace', desc:'Scroll back to show the active cell', tip:"If you've scrolled away from your active cell, this snaps the view back to it." },
+  { id:'nav-10', cat:'navigation', win:'Tab', mac:'Tab', desc:'Move one cell to the right', tip:'Pressing Enter after using Tab moves to the next row but stays in the same starting column — ideal for data entry forms.' },
+  { id:'nav-11', cat:'navigation', win:'Shift + Tab', mac:'Shift + Tab', desc:'Move one cell to the left' },
+
+  // More Editing
+  { id:'edt-15', cat:'editing', win:"Ctrl + '", mac:"Cmd + '", desc:'Copy the formula from the cell above', tip:'Copies the exact formula (not the value) from one row up — faster than Ctrl+D for single cells.' },
+  { id:'edt-16', cat:'editing', win:'Esc', mac:'Esc', desc:'Cancel editing / close a dialog', tip:'Press Esc while editing a cell to cancel your changes and restore the original value.' },
+
+  // More Workbook
+  { id:'wb-8', cat:'workbook', win:'Ctrl + Shift + N', mac:'Cmd + Shift + N', desc:'Insert a new worksheet tab' },
+  { id:'wb-9', cat:'workbook', win:'Alt + H + O + R', mac:'Alt + H + O + R', desc:'Rename the current worksheet tab', tip:'Double-clicking the tab also renames it.' },
+  { id:'wb-10', cat:'workbook', win:'Ctrl + Z (×10)', mac:'Cmd + Z (×10)', desc:'Undo up to 100 steps back', tip:'Excel keeps up to 100 undo steps. Keep pressing Ctrl+Z to step back through your history.' },
+
+  // ── NAVIGATION (10 new) ──
+  { id:'nav-12', cat:'navigation', win:'Page Down', mac:'Page Down', desc:'Move one full screen down', tip:'Faster than scrolling — jumps exactly one visible screen at a time.' },
+  { id:'nav-13', cat:'navigation', win:'Page Up', mac:'Page Up', desc:'Move one full screen up' },
+  { id:'nav-14', cat:'navigation', win:'Alt + Page Down', mac:'Alt + Page Down', desc:'Move one full screen to the right', tip:'Great for wide spreadsheets with many columns.' },
+  { id:'nav-15', cat:'navigation', win:'Alt + Page Up', mac:'Alt + Page Up', desc:'Move one full screen to the left' },
+  { id:'nav-16', cat:'navigation', win:'Enter', mac:'Return', desc:'Confirm entry and move one cell down', tip:'After entering data with Tab across a row, pressing Enter returns to the starting column of the next row.' },
+  { id:'nav-17', cat:'navigation', win:'Shift + Enter', mac:'Shift + Return', desc:'Confirm entry and move one cell up' },
+  { id:'nav-18', cat:'navigation', win:'Home', mac:'Home', desc:'Move to the first cell in the current row (column A)', tip:'Instantly jumps to column A without scrolling.' },
+  { id:'nav-19', cat:'navigation', win:'Ctrl + Shift + F6', mac:'Cmd + Shift + F6', desc:'Switch to the previous open workbook window' },
+  { id:'nav-20', cat:'navigation', win:'Alt + F6', mac:'Alt + F6', desc:'Switch to the next pane in a split window' },
+  { id:'nav-21', cat:'navigation', win:'Scroll Lock + Arrow', mac:'Scroll Lock + Arrow', desc:'Scroll the sheet without moving the active cell', tip:'Turn Scroll Lock on first, then use arrow keys to pan the view while keeping your selected cell.' },
+
+  // ── SELECTION (8 new) ──
+  { id:'sel-7', cat:'selection', win:'Ctrl + Shift + Home', mac:'Cmd + Shift + Home', desc:'Extend selection from current cell back to A1', tip:'Useful for selecting all data from your current position to the very beginning of the sheet.' },
+  { id:'sel-8', cat:'selection', win:'Ctrl + Shift + *', mac:'Cmd + Shift + *', desc:'Select the current data region (block of filled cells)', tip:'Selects the contiguous block of data around the active cell — great for tables.' },
+  { id:'sel-9', cat:'selection', win:'F8', mac:'F8', desc:'Toggle Extend Selection mode (EXT)', tip:'After pressing F8, arrow keys extend the selection without holding Shift. Press F8 again to exit.' },
+  { id:'sel-10', cat:'selection', win:'Shift + F8', mac:'Shift + F8', desc:'Add a non-adjacent range to the current selection', tip:'Press Shift+F8, move to a new area, then select more cells — all are added without losing the first selection.' },
+  { id:'sel-11', cat:'selection', win:'Shift + Page Down', mac:'Shift + Page Down', desc:'Extend selection one full screen down' },
+  { id:'sel-12', cat:'selection', win:'Shift + Page Up', mac:'Shift + Page Up', desc:'Extend selection one full screen up' },
+  { id:'sel-13', cat:'selection', win:'Shift + Home', mac:'Shift + Home', desc:'Extend selection to the beginning of the row' },
+  { id:'sel-14', cat:'selection', win:'Ctrl + Shift + Space', mac:'Ctrl + Shift + Space', desc:'Select the entire worksheet', tip:'Selects every cell. Combine with Ctrl+A for the same result.' },
+
+  // ── FORMATTING (16 new) ──
+  { id:'fmt-17', cat:'formatting', win:'Ctrl + 5', mac:'Cmd + 5', desc:'Apply or remove strikethrough', tip:'Great for marking completed tasks in a to-do list built in Excel.' },
+  { id:'fmt-18', cat:'formatting', win:'Ctrl + Shift + ^', mac:'Cmd + Shift + ^', desc:'Apply scientific notation format (1.00E+02)' },
+  { id:'fmt-19', cat:'formatting', win:'Ctrl + Shift + &', mac:'Cmd + Shift + &', desc:'Apply outline border to selected cells', tip:'Draws a border around the outside of the entire selection in one press.' },
+  { id:'fmt-20', cat:'formatting', win:'Ctrl + Shift + _', mac:'Cmd + Shift + _', desc:'Remove all borders from selected cells', tip:'Clears every border at once — no need to select each border type individually.' },
+  { id:'fmt-21', cat:'formatting', win:'Alt + H + A + C', mac:'Alt + H + A + C', desc:'Center-align cell content' },
+  { id:'fmt-22', cat:'formatting', win:'Alt + H + A + L', mac:'Alt + H + A + L', desc:'Left-align cell content' },
+  { id:'fmt-23', cat:'formatting', win:'Alt + H + A + R', mac:'Alt + H + A + R', desc:'Right-align cell content' },
+  { id:'fmt-24', cat:'formatting', win:'Alt + H + W', mac:'Alt + H + W', desc:'Toggle text wrapping in a cell', tip:'Wrap text so long content shows on multiple lines instead of spilling over neighboring cells.' },
+  { id:'fmt-25', cat:'formatting', win:'Alt + H + 6', mac:'Alt + H + 6', desc:'Increase cell indent' },
+  { id:'fmt-26', cat:'formatting', win:'Alt + H + 5', mac:'Alt + H + 5', desc:'Decrease cell indent' },
+  { id:'fmt-27', cat:'formatting', win:'Alt + H + O + I', mac:'Alt + H + O + I', desc:'AutoFit column width to content', tip:'No more cut-off text — auto-sizes the column to fit its longest entry.' },
+  { id:'fmt-28', cat:'formatting', win:'Alt + H + O + A', mac:'Alt + H + O + A', desc:'AutoFit row height to content' },
+  { id:'fmt-29', cat:'formatting', win:'Ctrl + 9', mac:'Cmd + 9', desc:'Hide selected rows', tip:'Hides without deleting — great for focusing on specific data sections.' },
+  { id:'fmt-30', cat:'formatting', win:'Ctrl + Shift + 9', mac:'Cmd + Shift + 9', desc:'Unhide rows in selection', tip:'Select rows on both sides of the hidden rows first, then press this.' },
+  { id:'fmt-31', cat:'formatting', win:'Ctrl + 0', mac:'Cmd + 0', desc:'Hide selected columns' },
+  { id:'fmt-32', cat:'formatting', win:'Ctrl + Shift + 0', mac:'Cmd + Shift + 0', desc:'Unhide columns in selection', tip:'Select columns on both sides of the hidden columns first.' },
+
+  // ── FORMULAS (10 new) ──
+  { id:'frm-11', cat:'formulas', win:'= (equals)', mac:'= (equals)', desc:'Start typing a formula', tip:'Every formula begins with =. Type = then the function name (e.g. =SUM, =IF, =VLOOKUP).' },
+  { id:'frm-12', cat:'formulas', win:'F3', mac:'F3', desc:'Paste a named range into a formula', tip:'After naming a range (e.g. "SalesData"), press F3 while typing a formula to insert it by name.' },
+  { id:'frm-13', cat:'formulas', win:'Ctrl + F3', mac:'Cmd + F3', desc:'Open Name Manager (create/edit/delete named ranges)', tip:'Command center for all named ranges — create meaningful names for cells and ranges.' },
+  { id:'frm-14', cat:'formulas', win:'Alt + M + P', mac:'Alt + M + P', desc:'Show precedent arrows — trace what a formula uses', tip:'Draws blue arrows from the formula back to every cell it references. Great for auditing.' },
+  { id:'frm-15', cat:'formulas', win:'Alt + M + D', mac:'Alt + M + D', desc:'Show dependent arrows — trace what uses this cell', tip:'Shows which formulas elsewhere depend on the active cell.' },
+  { id:'frm-16', cat:'formulas', win:'Alt + M + A + A', mac:'Alt + M + A + A', desc:'Remove all formula auditing arrows from the sheet' },
+  { id:'frm-17', cat:'formulas', win:'Ctrl + Alt + F9', mac:'Cmd + Alt + F9', desc:'Force recalculate all open workbooks', tip:'Use when Excel is in manual calculation mode and you need a full refresh.' },
+  { id:'frm-18', cat:'formulas', win:'Alt + M + V', mac:'Alt + M + V', desc:'Open Evaluate Formula — step through calculations one at a time', tip:'Evaluates each part of a formula step by step. Perfect for debugging complex formulas.' },
+  { id:'frm-19', cat:'formulas', win:'Shift + F9', mac:'Shift + F9', desc:'Recalculate only the active worksheet', tip:'Faster than F9 (which recalculates everything) when you only changed data on one sheet.' },
+  { id:'frm-20', cat:'formulas', win:'Alt + M + H', mac:'Alt + M + H', desc:'Open Watch Window — monitor cell values from anywhere', tip:'Add important cells to the Watch Window to see their values without scrolling to them.' },
+
+  // ── EDITING (15 new) ──
+  { id:'edt-18', cat:'editing', win:'F7', mac:'F7', desc:'Run spell check on the sheet', tip:'Checks spelling in all text cells. Essential before submitting any class assignment.' },
+  { id:'edt-19', cat:'editing', win:'F4 (general)', mac:'Cmd + Y', desc:'Repeat the last action performed', tip:'Applied a format to one cell? Press F4 on the next cell to apply the exact same action instantly.' },
+  { id:'edt-20', cat:'editing', win:'Ctrl + Shift + "', mac:'Cmd + Shift + "', desc:'Copy the value (not formula) from the cell above', tip:'Unlike Ctrl+\' which copies the formula, this copies the displayed value.' },
+  { id:'edt-21', cat:'editing', win:'Ctrl + Delete', mac:'Cmd + Delete', desc:'Delete text from cursor to end of cell (in edit mode)', tip:'Press F2 first to enter edit mode, then Ctrl+Delete to erase everything to the right of the cursor.' },
+  { id:'edt-22', cat:'editing', win:'Home (edit mode)', mac:'Home (edit mode)', desc:'Move cursor to start of cell content while editing', tip:'Press F2 to enter edit mode first, then Home to jump to the beginning of the text.' },
+  { id:'edt-23', cat:'editing', win:'End (edit mode)', mac:'End (edit mode)', desc:'Move cursor to end of cell content while editing' },
+  { id:'edt-24', cat:'editing', win:'Shift + F10', mac:'Shift + F10', desc:'Open right-click context menu from keyboard', tip:'No mouse needed — opens the same menu as right-clicking.' },
+  { id:'edt-25', cat:'editing', win:'Alt + H + I + R', mac:'Alt + H + I + R', desc:'Insert a row above the active cell' },
+  { id:'edt-26', cat:'editing', win:'Alt + H + I + C', mac:'Alt + H + I + C', desc:'Insert a column to the left of the active cell' },
+  { id:'edt-27', cat:'editing', win:'Alt + H + D + R', mac:'Alt + H + D + R', desc:'Delete the active row' },
+  { id:'edt-28', cat:'editing', win:'Alt + H + D + C', mac:'Alt + H + D + C', desc:'Delete the active column' },
+  { id:'edt-29', cat:'editing', win:'Ctrl + Shift + Z', mac:'Cmd + Shift + Z', desc:'Redo (alternative shortcut)' },
+  { id:'edt-30', cat:'editing', win:'Alt + H + F + P', mac:'Alt + H + F + P', desc:'Open Format Painter — copy formatting from one cell', tip:'Click a well-formatted cell, press this, then click another cell to paste its exact format. Double-click to apply to multiple cells.' },
+  { id:'edt-31', cat:'editing', win:'Ctrl + Shift + End', mac:'Cmd + Shift + End', desc:'Select from active cell to last used cell', tip:'Fast way to highlight your entire dataset in one move.' },
+  { id:'edt-32', cat:'editing', win:'Ctrl + Backspace (edit)', mac:'Cmd + Backspace (edit)', desc:'Delete the word to the left while editing a cell' },
+
+  // ── WORKBOOK (10 new) ──
+  { id:'wb-11', cat:'workbook', win:'Alt + F4', mac:'Cmd + Q', desc:'Exit Excel completely', tip:'Excel will prompt you to save unsaved changes before closing.' },
+  { id:'wb-12', cat:'workbook', win:'Ctrl + F4', mac:'Cmd + F4', desc:'Close the current workbook (keep Excel open)' },
+  { id:'wb-13', cat:'workbook', win:'Ctrl + F9', mac:'Ctrl + F9', desc:'Minimize the workbook window' },
+  { id:'wb-14', cat:'workbook', win:'Ctrl + F10', mac:'Ctrl + F10', desc:'Maximize or restore the workbook window' },
+  { id:'wb-15', cat:'workbook', win:'F1', mac:'F1', desc:'Open Excel Help', tip:'Search for any feature or function. Faster than Googling when you already have Excel open.' },
+  { id:'wb-16', cat:'workbook', win:'Alt + F8', mac:'Alt + F8', desc:'Open Macro dialog — run or manage macros', tip:'Run a recorded macro or manage existing ones. No VBA knowledge needed to run basic macros.' },
+  { id:'wb-17', cat:'workbook', win:'Ctrl + F2', mac:'Cmd + F2', desc:'Open Print Preview', tip:'Always preview before printing to catch layout issues.' },
+  { id:'wb-18', cat:'workbook', win:'Ctrl + Shift + F12', mac:'Cmd + Shift + F12', desc:'Print (quick print shortcut)' },
+  { id:'wb-19', cat:'workbook', win:'Alt + H + O + T', mac:'Alt + H + O + T', desc:'Change the color of the active worksheet tab', tip:'Color-code your tabs to organize sheets visually — great for multi-sheet class projects.' },
+  { id:'wb-20', cat:'workbook', win:'Ctrl + Shift + P', mac:'Cmd + Shift + P', desc:'Open the font size box in the toolbar for quick sizing' },
+
+  // ── DATA (10 new) ──
+  { id:'dat-11', cat:'data', win:'Alt + A + V + V', mac:'Alt + A + V + V', desc:'Open Data Validation dialog', tip:'Restrict what can be entered in a cell — e.g. only numbers 1–100, or a dropdown list. Great for building forms.' },
+  { id:'dat-12', cat:'data', win:'Alt + A + Z', mac:'Alt + A + Z', desc:'Group rows or columns (create outline)', tip:'Group rows so you can collapse/expand sections. Useful for large reports.' },
+  { id:'dat-13', cat:'data', win:'Alt + A + U', mac:'Alt + A + U', desc:'Ungroup rows or columns' },
+  { id:'dat-14', cat:'data', win:'Alt + A + H', mac:'Alt + A + H', desc:'Collapse group — hide detail rows/columns', tip:'Press the – button or this shortcut to collapse grouped rows for a summary view.' },
+  { id:'dat-15', cat:'data', win:'Alt + A + J', mac:'Alt + A + J', desc:'Expand group — show hidden detail rows/columns' },
+  { id:'dat-16', cat:'data', win:'Alt + A + C', mac:'Alt + A + C', desc:'Clear all active filters on the sheet', tip:'Shows all data again without removing the filter dropdowns.' },
+  { id:'dat-17', cat:'data', win:'Alt + A + E', mac:'Alt + A + E', desc:'Text to Columns wizard — split one column into many', tip:'Paste a column of "First Last" names and split into two columns. Works with commas, spaces, or fixed widths.' },
+  { id:'dat-18', cat:'data', win:'Alt + A + W + G', mac:'Alt + A + W + G', desc:'Open Goal Seek — work backwards from a target value', tip:'Enter a desired result and Excel finds what input achieves it. Great for financial modeling.' },
+  { id:'dat-19', cat:'data', win:'Alt + A + S + A', mac:'Alt + A + S + A', desc:'Sort selected data A to Z (ascending)' },
+  { id:'dat-20', cat:'data', win:'Alt + A + S + D', mac:'Alt + A + S + D', desc:'Sort selected data Z to A (descending)' },
+
+  // ── VIEW (9 new) ──
+  { id:'viw-7', cat:'view', win:'Alt + W + N', mac:'Alt + W + N', desc:'Open a new window showing the same workbook', tip:'View two different sheets side by side from the same file.' },
+  { id:'viw-8', cat:'view', win:'Alt + W + A', mac:'Alt + W + A', desc:'Arrange all open workbook windows on screen' },
+  { id:'viw-9', cat:'view', win:'Alt + W + B', mac:'Alt + W + B', desc:'View two workbooks side by side', tip:'Compare two spreadsheets simultaneously — synchronized scrolling helps spot differences.' },
+  { id:'viw-10', cat:'view', win:'Alt + W + R', mac:'Alt + W + R', desc:'Freeze the top row only', tip:'One-click freeze for the header row — no need to select a cell first.' },
+  { id:'viw-11', cat:'view', win:'Alt + W + C', mac:'Alt + W + C', desc:'Freeze the first column only', tip:'Keeps column A visible while scrolling right through wide data.' },
+  { id:'viw-12', cat:'view', win:'Alt + W + G', mac:'Alt + W + G', desc:'Toggle gridlines on or off', tip:'Hide gridlines for a cleaner presentation view of your data.' },
+  { id:'viw-13', cat:'view', win:'Alt + W + H', mac:'Alt + W + H', desc:'Toggle row and column headings on or off', tip:'Hides the A, B, C column letters and 1, 2, 3 row numbers.' },
+  { id:'viw-14', cat:'view', win:'Alt + W + Q', mac:'Alt + W + Q', desc:'Open Zoom dialog — set a specific zoom percentage' },
+  { id:'viw-15', cat:'view', win:'Ctrl + Shift + F1', mac:'Cmd + Shift + F1', desc:'Full screen — maximize spreadsheet, hide ribbon and taskbar', tip:'Press again or Escape to return to normal view.' },
+
+  // ── RIBBON & MENUS (12 new) ──
+  { id:'rib-1', cat:'ribbon', win:'Alt', mac:'Alt', desc:'Activate Ribbon Key Tips — show letter shortcuts for every tab', tip:'Press Alt, then a letter shown on the ribbon to navigate any command without the mouse.' },
+  { id:'rib-2', cat:'ribbon', win:'Alt + H', mac:'Alt + H', desc:'Go to the Home tab on the ribbon' },
+  { id:'rib-3', cat:'ribbon', win:'Alt + N', mac:'Alt + N', desc:'Go to the Insert tab on the ribbon' },
+  { id:'rib-4', cat:'ribbon', win:'Alt + P', mac:'Alt + P', desc:'Go to the Page Layout tab on the ribbon' },
+  { id:'rib-5', cat:'ribbon', win:'Alt + M', mac:'Alt + M', desc:'Go to the Formulas tab on the ribbon' },
+  { id:'rib-6', cat:'ribbon', win:'Alt + A', mac:'Alt + A', desc:'Go to the Data tab on the ribbon' },
+  { id:'rib-7', cat:'ribbon', win:'Alt + R', mac:'Alt + R', desc:'Go to the Review tab on the ribbon' },
+  { id:'rib-8', cat:'ribbon', win:'Alt + W', mac:'Alt + W', desc:'Go to the View tab on the ribbon' },
+  { id:'rib-9', cat:'ribbon', win:'F10', mac:'F10', desc:'Activate the menu bar and ribbon' },
+  { id:'rib-10', cat:'ribbon', win:'Ctrl + Shift + F', mac:'Cmd + Shift + F', desc:'Open the Font dialog box', tip:'Access all font options: size, style, color, and effects.' },
+  { id:'rib-11', cat:'ribbon', win:'Alt + F10', mac:'Alt + F10', desc:'Open Selection Pane — manage objects, charts, and images', tip:'Lists every chart, image, and shape on the sheet. Rename, reorder, or hide individual objects.' },
+  { id:'rib-12', cat:'ribbon', win:'Alt + N + V + T', mac:'Alt + N + V + T', desc:'Insert a PivotTable via the Insert ribbon tab', tip:'Alternative path to PivotTable insertion.' },
+
+  // ── COMMENTS & NOTES (10 new) ──
+  { id:'cmt-1', cat:'comments', win:'Shift + F2', mac:'Shift + F2', desc:'Insert or edit a comment/note in a cell', tip:'Adds a small note bubble to a cell. Hover over the red triangle to see it. Great for explaining formulas to professors.' },
+  { id:'cmt-2', cat:'comments', win:'Alt + R + D', mac:'Alt + R + D', desc:'Delete the comment in the active cell' },
+  { id:'cmt-3', cat:'comments', win:'Alt + R + A', mac:'Alt + R + A', desc:'Show or hide all comments on the sheet', tip:'Toggle all note bubbles visible at once — useful for reviewing all annotations.' },
+  { id:'cmt-4', cat:'comments', win:'Alt + R + E', mac:'Alt + R + E', desc:'Edit the comment in the active cell' },
+  { id:'cmt-5', cat:'comments', win:'Alt + R + P + S', mac:'Alt + R + P + S', desc:'Show or hide a single comment' },
+  { id:'cmt-6', cat:'comments', win:'Ctrl + Shift + O', mac:'Cmd + Shift + O', desc:'Select all cells that contain comments', tip:'Highlights every cell with a note — makes it easy to review or delete all comments at once.' },
+  { id:'cmt-7', cat:'comments', win:'Alt + R + G', mac:'Alt + R + G', desc:'Go to the next comment on the sheet', tip:'Cycle through all comments one by one for review.' },
+  { id:'cmt-8', cat:'comments', win:'Alt + R + V', mac:'Alt + R + V', desc:'Go to the previous comment on the sheet' },
+  { id:'cmt-9', cat:'comments', win:'Alt + R + T', mac:'Alt + R + T', desc:'Convert a comment to a note (or vice versa)', tip:'In newer Excel, "Comments" are threaded (for collaboration) and "Notes" are the classic tooltip bubbles.' },
+  { id:'cmt-10', cat:'comments', win:'Alt + R + C', mac:'Alt + R + C', desc:'Insert a new threaded comment (for collaboration)', tip:'Threaded comments let multiple people reply in a chain — perfect for group projects.' },
+];
+
+// ── Menu paths (Microsoft 365) ──
+const MENUS = {
+  // Navigation
+  'nav-1':  'Name Box (top-left) → type A1 → Enter',
+  'nav-2':  'Home → Editing → Find & Select → Go To Special → Last Cell → OK',
+  'nav-3':  'Click first cell → hold Shift → double-click cell border in direction',
+  'nav-4':  'Home → Editing → Find & Select → Go To',
+  'nav-5':  'Click the next worksheet tab at the bottom',
+  'nav-6':  'Click the previous worksheet tab at the bottom',
+  'nav-7':  'Home → Editing → Find & Select → Go To',
+  'nav-8':  'View → Window → Switch Windows → select workbook',
+  'nav-9':  'Name Box (top-left) → press Enter to scroll view to active cell',
+  'nav-10': 'Click the cell to the right',
+  'nav-11': 'Click the cell to the left',
+  'nav-12': 'Vertical scroll bar → click below the scroll thumb',
+  'nav-13': 'Vertical scroll bar → click above the scroll thumb',
+  'nav-14': 'Horizontal scroll bar → click to the right of the scroll thumb',
+  'nav-15': 'Horizontal scroll bar → click to the left of the scroll thumb',
+  'nav-16': 'Click ✓ (Enter) in formula bar → click the cell below',
+  'nav-17': 'Click ✓ (Enter) in formula bar → click the cell above',
+  'nav-18': 'Click the row number to jump to column A in that row',
+  'nav-19': 'View → Window → Switch Windows → select previous workbook',
+  'nav-20': 'Click inside the other pane to switch focus in a split view',
+  'nav-21': 'Use the scroll bars to pan the view (no keyboard equivalent)',
+  // Selection
+  'sel-1':  'Click the Select All button (gray square at intersection of row & column headers)',
+  'sel-2':  'Home → Editing → Find & Select → Go To Special → Last Cell → hold Shift → OK',
+  'sel-3':  'Click the row number on the left side of the sheet',
+  'sel-4':  'Click the column letter at the top of the sheet',
+  'sel-5':  'Click first cell → hold Shift → double-click the cell border in direction of data',
+  'sel-6':  'Click first cell → hold Ctrl → click each additional cell individually',
+  'sel-7':  'Click current cell → hold Shift → click cell A1',
+  'sel-8':  'Home → Editing → Find & Select → Go To Special → Current Region → OK',
+  'sel-9':  'Click first cell → hold Shift → use Arrow keys to extend selection',
+  'sel-10': 'Hold Shift → hold Ctrl → click new area to add it to the current selection',
+  'sel-11': 'Click first cell → hold Shift → use vertical scroll bar to extend downward',
+  'sel-12': 'Click first cell → hold Shift → use vertical scroll bar to extend upward',
+  'sel-13': 'Click current cell → hold Shift → click the first cell in that row (column A)',
+  'sel-14': 'Click the Select All button (gray square at top-left corner of sheet)',
+  // Formatting
+  'fmt-1':  'Home → Font → click B (Bold)',
+  'fmt-2':  'Home → Font → click I (Italic)',
+  'fmt-3':  'Home → Font → click U (Underline)',
+  'fmt-4':  'Right-click cell → Format Cells — or — Home → Font → click dialog launcher (↗)',
+  'fmt-5':  'Home → Number → click Accounting Number Format ($)',
+  'fmt-6':  'Home → Number → click Percent Style (%)',
+  'fmt-7':  'Data → Sort & Filter → Filter',
+  'fmt-8':  'Home → Number → Number Format dropdown → General',
+  'fmt-9':  'Home → Font → Fill Color dropdown (▼ next to paint bucket icon)',
+  'fmt-10': 'Home → Font → Borders dropdown (▼ next to border icon)',
+  'fmt-11': 'Home → Number → Number Format dropdown → Short Date',
+  'fmt-12': 'Home → Number → Number Format dropdown → Time',
+  'fmt-13': 'Home → Number → Comma Style (,)',
+  'fmt-14': 'Home → Alignment → Merge & Center',
+  'fmt-15': 'Data → Data Tools → Flash Fill',
+  'fmt-16': 'Insert → Links → Link',
+  'fmt-17': 'Right-click cell → Format Cells → Font tab → check Strikethrough → OK',
+  'fmt-18': 'Home → Number → Number Format dropdown → Scientific',
+  'fmt-19': 'Home → Font → Borders dropdown → Outside Borders',
+  'fmt-20': 'Home → Font → Borders dropdown → No Border',
+  'fmt-21': 'Home → Alignment → Center',
+  'fmt-22': 'Home → Alignment → Align Left',
+  'fmt-23': 'Home → Alignment → Align Right',
+  'fmt-24': 'Home → Alignment → Wrap Text',
+  'fmt-25': 'Home → Alignment → Increase Indent',
+  'fmt-26': 'Home → Alignment → Decrease Indent',
+  'fmt-27': 'Home → Cells → Format → AutoFit Column Width',
+  'fmt-28': 'Home → Cells → Format → AutoFit Row Height',
+  'fmt-29': 'Right-click selected row number(s) → Hide',
+  'fmt-30': 'Select rows on both sides of hidden rows → Right-click → Unhide',
+  'fmt-31': 'Right-click selected column letter(s) → Hide',
+  'fmt-32': 'Select columns on either side of hidden columns → Right-click → Unhide',
+  // Formulas
+  'frm-1':  'Formulas → Function Library → AutoSum — or — Home → Editing → AutoSum (Σ)',
+  'frm-2':  'Double-click the cell to enter edit mode',
+  'frm-3':  'Formula bar → manually type $ before the column letter and/or row number',
+  'frm-4':  'Formulas → Formula Auditing → Show Formulas',
+  'frm-5':  'Formulas → Function Library → Insert Function — or — click fx next to formula bar',
+  'frm-6':  'Formulas → Calculation → Calculate Now',
+  'frm-7':  'Type formula → press Ctrl+Shift+Enter (legacy) — or use = for spill arrays in M365',
+  'frm-8':  'Formulas → Formula Auditing → Trace Precedents',
+  'frm-9':  'Formulas → Formula Auditing → Trace Dependents',
+  'frm-10': 'Formulas → Function Library → Insert Function → select function → OK to see arguments',
+  'frm-11': 'Click the cell → click in the Formula Bar → type = then the function name',
+  'frm-12': 'Formulas → Defined Names → Use in Formula → Paste Names',
+  'frm-13': 'Formulas → Defined Names → Name Manager',
+  'frm-14': 'Formulas → Formula Auditing → Trace Precedents',
+  'frm-15': 'Formulas → Formula Auditing → Trace Dependents',
+  'frm-16': 'Formulas → Formula Auditing → Remove Arrows',
+  'frm-17': 'Formulas → Calculation → Calculate Now',
+  'frm-18': 'Formulas → Formula Auditing → Evaluate Formula',
+  'frm-19': 'Formulas → Calculation → Calculate Sheet',
+  'frm-20': 'Formulas → Formula Auditing → Watch Window → Add Watch → OK',
+  // Editing
+  'edt-1':  'Quick Access Toolbar → click Undo arrow (↩) — or — right-click QAT → add Undo',
+  'edt-2':  'Quick Access Toolbar → click Redo arrow (↪)',
+  'edt-3':  'Home → Clipboard → Copy',
+  'edt-4':  'Home → Clipboard → Cut',
+  'edt-5':  'Home → Clipboard → Paste',
+  'edt-6':  'Home → Clipboard → Paste dropdown (▼) → Paste Special → choose option → OK',
+  'edt-7':  'Home → Editing → Fill → Down',
+  'edt-8':  'Home → Editing → Fill → Right',
+  'edt-9':  'Home → Editing → Find & Select → Replace',
+  'edt-10': 'Home → Editing → Find & Select → Find',
+  'edt-11': 'Home → Editing → Clear → Clear Contents',
+  'edt-12': 'Home → Cells → Delete → Delete Sheet Rows (or Delete Sheet Columns)',
+  'edt-13': 'Home → Cells → Insert → Insert Sheet Rows (or Insert Sheet Columns)',
+  'edt-14': 'Double-click cell to edit → position cursor → no ribbon equivalent (keyboard only)',
+  'edt-15': 'Home → Editing → Fill → Down (with single cell selected)',
+  'edt-16': 'Click ✗ (Cancel) button in the formula bar',
+  'edt-18': 'Review → Proofing → Spelling',
+  'edt-19': 'Quick Access Toolbar → click Redo (↪) — works for many repeated formatting actions',
+  'edt-20': 'Copy the cell above → Home → Clipboard → Paste Special → Values → OK',
+  'edt-21': 'Double-click cell → drag to select text to end → Delete key',
+  'edt-22': 'Double-click cell to edit → click at the very start of the text',
+  'edt-23': 'Double-click cell to edit → click at the very end of the text',
+  'edt-24': 'Right-click the selected cell(s)',
+  'edt-25': 'Right-click a row number → Insert',
+  'edt-26': 'Right-click a column letter → Insert',
+  'edt-27': 'Right-click a row number → Delete',
+  'edt-28': 'Right-click a column letter → Delete',
+  'edt-29': 'Quick Access Toolbar → click Redo arrow (↪)',
+  'edt-30': 'Home → Clipboard → Format Painter (paintbrush icon) → click or drag target cells',
+  'edt-31': 'Click first cell → Home → Editing → Find & Select → Go To Special → Last Cell → hold Shift → OK',
+  'edt-32': 'Double-click cell to edit → double-click the word to select it → Delete',
+  // Dates & Time
+  'dt-1':   'No ribbon button — type =TODAY() for a live date, or enter date manually (e.g. 8/29/2026)',
+  'dt-2':   'No ribbon button — type =NOW() for a live timestamp, or enter time manually (e.g. 2:30 PM)',
+  // Workbook
+  'wb-1':   'File → Save — or — Quick Access Toolbar → Save (💾 icon)',
+  'wb-2':   'File → New → Blank Workbook',
+  'wb-3':   'File → Open → Browse → select file → Open',
+  'wb-4':   'File → Close',
+  'wb-5':   'File → Print → click Print button',
+  'wb-6':   'File → Save As → Browse → choose location, name, and format → Save',
+  'wb-8':   'Right-click any sheet tab → Insert → Worksheet → OK — or — click + (New Sheet) button',
+  'wb-9':   'Double-click the worksheet tab name → type new name → Enter',
+  'wb-10':  'Click the dropdown ▼ next to the Undo button on the Quick Access Toolbar → choose steps',
+  'wb-11':  'File → Close → then click × in the title bar to exit Excel',
+  'wb-12':  'File → Close',
+  'wb-13':  'Click the – (Minimize) button in the Excel window title bar',
+  'wb-14':  'Click the □ (Maximize/Restore) button in the Excel window title bar',
+  'wb-15':  'File → Help — or — click the ? (Help) icon in the title bar',
+  'wb-16':  'View → Macros → View Macros → select macro → Run',
+  'wb-17':  'File → Print (Print Preview is shown automatically before printing)',
+  'wb-18':  'File → Print → click Print button',
+  'wb-19':  'Right-click worksheet tab → Tab Color → choose a color',
+  'wb-20':  'Home → Font → click in the Font Size box → type size → Enter',
+  // Data
+  'dat-1':  'Insert → Tables → Table → confirm range → check My table has headers → OK',
+  'dat-2':  'Data → Sort & Filter → Filter',
+  'dat-3':  'Data → Data Tools → Remove Duplicates → select columns → OK',
+  'dat-4':  'Insert → Tables → PivotTable → From Table/Range → choose location → OK',
+  'dat-5':  'Data → Sort & Filter → Sort → add levels, choose column and order → OK',
+  'dat-7':  'Select range → click the Quick Analysis button (⚡ icon, bottom-right of selection)',
+  'dat-8':  'Click inside PivotTable → PivotTable Analyze tab → Data → Refresh',
+  'dat-9':  'Home → Editing → Find & Select → Go To Special → Notes → OK',
+  'dat-10': 'Data → Sort & Filter → Filter',
+  'dat-11': 'Data → Data Tools → Data Validation → Data Validation → set rules → OK',
+  'dat-12': 'Select rows or columns → Data → Outline → Group → Rows (or Columns) → OK',
+  'dat-13': 'Select grouped rows or columns → Data → Outline → Ungroup → Rows (or Columns)',
+  'dat-14': 'Click the – button in the outline area (left of row numbers or above column letters)',
+  'dat-15': 'Click the + button in the outline area to expand the group',
+  'dat-16': 'Data → Sort & Filter → Clear',
+  'dat-17': 'Select column → Data → Data Tools → Text to Columns → follow the wizard → Finish',
+  'dat-18': 'Data → Forecast → What-If Analysis → Goal Seek → set cell, value, changing cell → OK',
+  'dat-19': 'Data → Sort & Filter → Sort A to Z (A↓Z button)',
+  'dat-20': 'Data → Sort & Filter → Sort Z to A (Z↑A button)',
+  // View
+  'viw-1':  'Double-click any ribbon tab to collapse it — double-click again to expand',
+  'viw-2':  'View → Window → Freeze Panes → Freeze Panes (or Unfreeze Panes)',
+  'viw-3':  'View → Zoom → Zoom → select percentage → OK',
+  'viw-4':  'View → Window → Split',
+  'viw-5':  'Select data → Insert → Charts → choose chart type → Move Chart → New sheet → OK',
+  'viw-6':  'Select data → Insert → Charts → choose chart type → chart appears on current sheet',
+  'viw-7':  'View → Window → New Window',
+  'viw-8':  'View → Window → Arrange All → choose layout → OK',
+  'viw-9':  'View → Window → View Side by Side',
+  'viw-10': 'View → Window → Freeze Panes → Freeze Top Row',
+  'viw-11': 'View → Window → Freeze Panes → Freeze First Column',
+  'viw-12': 'View → Show → check or uncheck Gridlines',
+  'viw-13': 'View → Show → check or uncheck Headings',
+  'viw-14': 'View → Zoom → Zoom → enter percentage → OK',
+  'viw-15': 'View → Workbook Views → Full Screen (if available) — or collapse ribbon + zoom',
+  // Ribbon & Menus
+  'rib-1':  'Click any ribbon tab to activate it, then follow the visible button labels',
+  'rib-2':  'Click the Home tab',
+  'rib-3':  'Click the Insert tab',
+  'rib-4':  'Click the Page Layout tab',
+  'rib-5':  'Click the Formulas tab',
+  'rib-6':  'Click the Data tab',
+  'rib-7':  'Click the Review tab',
+  'rib-8':  'Click the View tab',
+  'rib-9':  'Click any ribbon tab to make it active',
+  'rib-10': 'Home → Font → click dialog launcher (↗ small arrow in the Font group corner)',
+  'rib-11': 'Home → Editing → Find & Select → Selection Pane',
+  'rib-12': 'Insert → Tables → PivotTable → From Table/Range → choose location → OK',
+  // Comments & Notes
+  'cmt-1':  'Review → Comments → New Note — or — right-click cell → New Note',
+  'cmt-2':  'Click the commented cell → Review → Comments → Delete',
+  'cmt-3':  'Review → Comments → Show All Comments',
+  'cmt-4':  'Right-click commented cell → Edit Note — or — Review → Comments → Edit Comment',
+  'cmt-5':  'Right-click commented cell → Show/Hide Comment',
+  'cmt-6':  'Home → Editing → Find & Select → Go To Special → Notes → OK',
+  'cmt-7':  'Review → Comments → Next',
+  'cmt-8':  'Review → Comments → Previous',
+  'cmt-9':  'Right-click comment → Convert to Threaded Comment (or Convert to Note)',
+  'cmt-10': 'Review → Comments → New Comment (threaded, for collaboration)',
+};
+
+// ── State ──
+let currentPlatform = 'windows';
+let catPlatform = 'windows';
+let allPlatform = 'windows';
+let currentTab = 'home';
+let currentCategoryId = null;
+let expandedCards = new Set();
+let favorites = new Set();
+
+// ── Favorites persistence ──
+function loadFavorites() {
+  try {
+    const stored = localStorage.getItem('xlsc_fav');
+    if (stored) favorites = new Set(JSON.parse(stored));
+  } catch(e) {}
+}
+function saveFavorites() {
+  try { localStorage.setItem('xlsc_fav', JSON.stringify([...favorites])); } catch(e) {}
+}
+function toggleFavorite(id, e) {
+  e.stopPropagation();
+  if (favorites.has(id)) favorites.delete(id);
+  else favorites.add(id);
+  saveFavorites();
+  document.querySelectorAll('[data-fav-id="' + id + '"]').forEach(btn => {
+    btn.classList.toggle('active', favorites.has(id));
+    btn.textContent = favorites.has(id) ? '★' : '☆';
+  });
+  if (currentTab === 'favorites') renderFavoritesScreen();
+}
+function renderFavoritesScreen() {
+  const list = SHORTCUTS.filter(s => favorites.has(s.id));
+  const countEl = document.getElementById('favCount');
+  const listEl = document.getElementById('favShortcutsList');
+  if (countEl) countEl.textContent = list.length
+    ? `${list.length} saved shortcut${list.length !== 1 ? 's' : ''}` : '';
+  if (list.length === 0) {
+    listEl.innerHTML = `
+      <div class="fav-empty">
+        <div class="fav-empty-icon">⭐</div>
+        <div class="fav-empty-title">No favorites yet</div>
+        <div class="fav-empty-sub">Tap ☆ on any shortcut to save it here for quick access</div>
+      </div>`;
+  } else {
+    listEl.innerHTML = list.map(s => renderCard(s, currentPlatform, true)).join('') + '<div style="height:20px"></div>';
+  }
+}
+
+
+// ── Render key combo ──
+function renderKeys(combo) {
+  const parts = combo.split(/\s*\+\s*/);
+  return parts.map((k, i) =>
+    (i > 0 ? '<span class="key-plus">+</span>' : '') +
+    `<span class="key-badge">${k}</span>`
+  ).join('');
+}
+
+// ── Render shortcut card ──
+function renderCard(s, platform, showDot = false) {
+  const cat = CATEGORIES.find(c => c.id === s.cat);
+  const combo = platform === 'mac' ? s.mac : s.win;
+  const dotHtml = showDot && cat
+    ? `<div class="sc-cat-dot" style="background:${cat.color}"></div>`
+    : '';
+  const tipHtml = s.tip
+    ? `<div class="sc-tip" id="tip-${s.id}">
+        <span style="font-size:13px;flex-shrink:0;">💡</span>
+        <span class="sc-tip-text">${s.tip}</span>
+       </div>`
+    : '';
+  const isFav = favorites.has(s.id);
+  const menu = MENUS[s.id] || '';
+  const menuHtml = menu
+    ? `<div class="sc-menu">
+        <span class="sc-menu-pin">📍</span>
+        <span class="sc-menu-path">${menu.replace(/→/g, '<span class="arr">→</span>')}</span>
+       </div>`
+    : '';
+  const actionsHtml = `
+    <div class="sc-actions">
+      <button class="fav-btn${isFav ? ' active' : ''}" data-fav-id="${s.id}" onclick="toggleFavorite('${s.id}',event)" title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">${isFav ? '★' : '☆'}</button>
+    </div>`;
+  return `
+    <div class="shortcut-card" onclick="toggleCard('${s.id}')">
+      <div class="sc-row">
+        ${dotHtml}
+        <div class="sc-body">
+          <div class="sc-desc">${s.desc}</div>
+          <div class="sc-keys" id="keys-${s.id}">${renderKeys(combo)}</div>
+          ${menuHtml}
+          ${actionsHtml}
+        </div>
+        ${s.tip ? `<span class="sc-chevron" id="chev-${s.id}">▾</span>` : ''}
+      </div>
+      ${tipHtml}
+    </div>`;
+}
+
+function toggleCard(id) {
+  const tip = document.getElementById('tip-' + id);
+  const chev = document.getElementById('chev-' + id);
+  if (!tip) return;
+  const isOpen = tip.classList.contains('visible');
+  tip.classList.toggle('visible', !isOpen);
+  if (chev) chev.classList.toggle('open', !isOpen);
+}
+
+// ── Most Used ──
+const MOST_USED_IDS = [
+  'edt-3',  // Copy
+  'edt-5',  // Paste
+  'edt-1',  // Undo
+  'wb-1',   // Save
+  'fmt-1',  // Bold
+  'frm-1',  // AutoSum
+  'frm-2',  // Edit cell
+  'frm-3',  // Toggle $ reference
+  'edt-7',  // Fill Down
+  'edt-9',  // Find & Replace
+  'fmt-7',  // AutoFilter
+  'dat-1',  // Create Table
+];
+
+function renderMostUsed() {
+  const list = MOST_USED_IDS.map(id => SHORTCUTS.find(s => s.id === id)).filter(Boolean);
+  document.getElementById('mostUsedList').innerHTML =
+    list.map(s => renderCard(s, currentPlatform, true)).join('');
+}
+
+// ── Category grid ──
+function renderCatGrid() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATEGORIES.map(cat => {
+    const count = SHORTCUTS.filter(s => s.cat === cat.id).length;
+    return `
+      <div class="cat-card" onclick="openCategory('${cat.id}')">
+        <div class="cat-icon-wrap" style="background:${cat.bg}">
+          <span>${cat.icon}</span>
+        </div>
+        <div class="cat-name">${cat.label}</div>
+        <div class="cat-count">${count} shortcuts</div>
+      </div>`;
+  }).join('');
+}
+
+// ── Top picks ──
+function renderTopPicks() {
+  const picks = SHORTCUTS.filter(s => s.tip).slice(0, 4);
+  document.getElementById('topPicksList').innerHTML =
+    picks.map(s => renderCard(s, currentPlatform, true)).join('');
+}
+
+// ── Home search ──
+function handleHomeSearch(val) {
+  const clear = document.getElementById('homeSearchClear');
+  clear.classList.toggle('visible', val.length > 0);
+
+  const browseSec = document.getElementById('browseSec');
+  const searchSec = document.getElementById('searchSec');
+  const resultsList = document.getElementById('searchResultsList');
+  const countEl = document.getElementById('searchCount');
+  const emptyEl = document.getElementById('homeEmpty');
+
+  if (!val.trim()) {
+    browseSec.style.display = '';
+    searchSec.style.display = 'none';
+    return;
+  }
+  browseSec.style.display = 'none';
+  searchSec.style.display = 'block';
+
+  const q = val.toLowerCase();
+  const results = SHORTCUTS.filter(s =>
+    s.desc.toLowerCase().includes(q) ||
+    s.win.toLowerCase().includes(q) ||
+    s.mac.toLowerCase().includes(q) ||
+    s.cat.includes(q)
+  );
+  countEl.textContent = `${results.length} result${results.length !== 1 ? 's' : ''} for "${val}"`;
+  resultsList.innerHTML = results.map(s => renderCard(s, currentPlatform, true)).join('');
+  emptyEl.classList.toggle('visible', results.length === 0);
+}
+
+function clearHomeSearch() {
+  document.getElementById('homeSearch').value = '';
+  handleHomeSearch('');
+}
+
+// ── All shortcuts screen ──
+function renderAllShortcuts(filter = '') {
+  const q = filter.toLowerCase();
+  const list = filter.trim()
+    ? SHORTCUTS.filter(s =>
+        s.desc.toLowerCase().includes(q) ||
+        s.win.toLowerCase().includes(q) ||
+        s.mac.toLowerCase().includes(q) ||
+        s.cat.includes(q)
+      )
+    : SHORTCUTS;
+  document.getElementById('allCount').textContent =
+    `${list.length} shortcut${list.length !== 1 ? 's' : ''}`;
+  document.getElementById('allShortcutsList').innerHTML =
+    list.map(s => renderCard(s, allPlatform, true)).join('') +
+    '<div style="height:20px"></div>';
+}
+
+function handleAllSearch(val) {
+  const clear = document.getElementById('allSearchClear');
+  clear.classList.toggle('visible', val.length > 0);
+  renderAllShortcuts(val);
+}
+function clearAllSearch() {
+  document.getElementById('allSearch').value = '';
+  renderAllShortcuts('');
+}
+
+// ── Category screen ──
+function openCategory(catId) {
+  currentCategoryId = catId;
+  const cat = CATEGORIES.find(c => c.id === catId);
+  const shorts = SHORTCUTS.filter(s => s.cat === catId);
+
+  document.getElementById('catHeaderIcon').innerHTML =
+    `<span style="font-size:18px">${cat.icon}</span>`;
+  document.getElementById('catHeaderIcon').style.background = cat.bg;
+  document.getElementById('catHeaderName').textContent = cat.label;
+  document.getElementById('catHeaderCount').textContent = `${shorts.length} shortcuts`;
+
+  document.getElementById('catShortcutsList').innerHTML =
+    shorts.map(s => renderCard(s, catPlatform)).join('') +
+    '<div style="height:20px"></div>';
+
+  showScreen('category');
+}
+
+function goBack() {
+  showScreen('home');
+}
+
+// ── Platform toggles ──
+function setPlatform(p) {
+  currentPlatform = p;
+  document.getElementById('os-win').classList.toggle('active', p === 'windows');
+  document.getElementById('os-mac').classList.toggle('active', p === 'mac');
+  renderMostUsed();
+  renderTopPicks();
+  const q = document.getElementById('homeSearch').value;
+  if (q) handleHomeSearch(q);
+}
+
+function setCatPlatform(p) {
+  catPlatform = p;
+  document.getElementById('cat-os-win').classList.toggle('active', p === 'windows');
+  document.getElementById('cat-os-mac').classList.toggle('active', p === 'mac');
+  if (currentCategoryId) openCategory(currentCategoryId);
+}
+
+function setAllPlatform(p) {
+  allPlatform = p;
+  document.getElementById('all-os-win').classList.toggle('active', p === 'windows');
+  document.getElementById('all-os-mac').classList.toggle('active', p === 'mac');
+  renderAllShortcuts(document.getElementById('allSearch').value);
+}
+
+// ── Tab switching ──
+function switchTab(tab) {
+  currentTab = tab;
+  ['home','all','favorites'].forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+  });
+  if (tab === 'home') { showScreen('home'); }
+  if (tab === 'all') { showScreen('all'); renderAllShortcuts(); }
+  if (tab === 'favorites') { showScreen('favorites'); renderFavoritesScreen(); }
+}
+
+function showScreen(name) {
+  ['home','category','all','favorites'].forEach(s => {
+    document.getElementById('screen-' + s).classList.toggle('active', s === name);
+  });
+}
+
+// ── Key grid background ──
+function buildKeyGrid() {
+  const grid = document.getElementById('keyGrid');
+  const cols = Math.ceil(window.innerWidth / 64);
+  const rows = Math.ceil(window.innerHeight / 64);
+  const count = cols * rows;
+  grid.innerHTML = Array.from({length: count}).map(() =>
+    '<div class="key-cell"></div>'
+  ).join('');
+}
+
+// ── Init ──
+loadFavorites();
+renderCatGrid();
+renderMostUsed();
+renderTopPicks();
+renderAllShortcuts();
+buildKeyGrid();
+document.getElementById('totalCount').textContent = SHORTCUTS.length;
+window.addEventListener('resize', buildKeyGrid);
+</script>
+</body>
+</html>
