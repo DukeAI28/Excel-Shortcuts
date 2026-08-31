@@ -161,6 +161,26 @@
   }
   .section-label:first-child { margin-top: 0; }
 
+  /* Collapsible section header */
+  .section-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    margin: 0 0 10px;
+  }
+  .section-toggle .section-label { margin: 0; }
+  .section-toggle-chevron {
+    font-size: 13px;
+    color: var(--text3);
+    transition: transform .2s;
+  }
+  .section-toggle-chevron.open { transform: rotate(180deg); }
+  .collapsible { overflow: hidden; }
+  .collapsible.collapsed { display: none; }
+
   /* ── Shortcut card ── */
   .card {
     background: var(--surface);
@@ -727,6 +747,7 @@ let currentTab = 'explore';
 let currentCat = null;
 let favorites = new Set();
 let expandedCards = new Set();
+let mostUsedOpen = false;
 
 function loadFavs() {
   try { const s = localStorage.getItem('xl_favs'); if (s) favorites = new Set(JSON.parse(s)); } catch(e){}
@@ -797,12 +818,22 @@ function renderSearch(q) {
   el.innerHTML = html;
 }
 
+function toggleMostUsed() {
+  mostUsedOpen = !mostUsedOpen;
+  render();
+}
+
 function renderExplore(el) {
   const mostUsed = MOST_USED_IDS.map(id => SHORTCUTS.find(s => s.id === id)).filter(Boolean);
   const topPicks = SHORTCUTS.filter(s => s.tip).slice(0, 5);
 
-  let html = `<div class="section-label">Most Used</div>`;
+  let html = `<div class="section-toggle" onclick="toggleMostUsed()">
+    <span class="section-label">Most Used (${mostUsed.length})</span>
+    <span class="section-toggle-chevron${mostUsedOpen?' open':''}">▼</span>
+  </div>
+  <div class="collapsible${mostUsedOpen?'':' collapsed'}">`;
   html += mostUsed.map(s => cardHTML(s, true)).join('');
+  html += `</div>`;
 
   html += `<div class="section-label" style="margin-top:20px">Browse by Category</div>`;
   html += `<div class="cat-grid">`;
